@@ -8,5 +8,6 @@ public class Main {
         IO.println(String.format("Hello and welcome!"));
 
         Mesa mesa = new Mesa("Mesa");
+        mesa.Comecar();
     }
 }
