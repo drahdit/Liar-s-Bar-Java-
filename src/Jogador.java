@@ -44,7 +44,6 @@ public class Jogador {
         this.rodada = mesa.getRodada();
         lying = false;
         int qnt_cartas = (int)(1 + (Math.random() * (cartas.size() - 1)));
-        System.out.println(cartas.size());
         System.out.print(nome + " joga " +  qnt_cartas + " " + rodada);
         for (int i = 0; i < qnt_cartas; i++) {
             int carta_escolhida = (int)(Math.random() * cartas.size());

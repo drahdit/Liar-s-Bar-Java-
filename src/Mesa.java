@@ -6,6 +6,9 @@ public class Mesa {
     private char rodada;
     private boolean lying;
     private List<Jogador> jogador = new ArrayList<>();
+    private int jogador_mrt = 0;
+    private int loop = 0;
+    int jogador_ini = loop % 4;
 
 
     public Mesa(String nome) {
@@ -20,7 +23,7 @@ public class Mesa {
 
     public void Comecar(){
         do {
-            int jogador_mrt = 0;
+
             boolean contestacao_atv = false;
             int x = (int)(1 + Math.random() * 3);
             switch (x) {
@@ -47,29 +50,44 @@ public class Mesa {
             if (jogador.size() == 1){
                 break;
             }
-            System.out.println("size: " + jogador.size());
+
             contestacao_atv = false;
 
-            for (int z = 0; z < 1000 || contestacao_atv == false; z++){
-                if (z >= (3 - jogador_mrt)){
+            for (int z = jogador_ini; z < 1000 || contestacao_atv == false; z++){
+                if (z > (3 - jogador_mrt)){
                     z = 0;
                 }
-                System.out.println("z = " + z);
-                if (z != 0){
-                    this.lying = jogador.get(z - 1).getLying();
+                if (jogador.size() == 1){
+                    break;
+                }
+                if (z != jogador_ini){
+                    if (z == 0){
+                        this.lying = jogador.get(jogador.size() - 1).getLying();
+                    } else{
+                        this.lying = jogador.get(z - 1).getLying();
+                    }
 
                     int resposta = jogador.get(z).Contestacao(this);
                     if (resposta == 0){
                         contestacao_atv = true;
                         break;
                     } else if (resposta == 1) {
-                        jogador.get(z - 1).AcataContestacao();
+                        if (z == 0){
+                            jogador.get(jogador.size() - 1).AcataContestacao();
+                        }else {
+                            jogador.get(z - 1).AcataContestacao();
+                        }
                         contestacao_atv = true;
                         break;
                     }
                 }
                 jogador.get(z).Jogar(this);
 
+            }
+            loop++;
+            jogador_ini = loop % 4;
+            if (jogador_ini > jogador.size()){
+                jogador_ini -= jogador_mrt;
             }
         }while (jogador.size() > 1);
         System.out.println(jogador.get(0).getNome() + "venceu!");
