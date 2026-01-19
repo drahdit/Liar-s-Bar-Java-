@@ -20,6 +20,7 @@ public class Jogador {
     }
 
     public void Nova_rodada(){
+        cartas.clear();
         for (int x = 1; x < 6; x++) {
             int z = (int) (1 + Math.random() * 3);
             switch (z) {
@@ -42,16 +43,17 @@ public class Jogador {
     public void Jogar(Mesa mesa){
         this.rodada = mesa.getRodada();
         lying = false;
-        int qnt_cartas = (int)(1 + Math.random() * 3);
+        int qnt_cartas = (int)(1 + (Math.random() * (cartas.size() - 1)));
+        System.out.println(cartas.size());
         System.out.print(nome + " joga " +  qnt_cartas + " " + rodada);
-        for (int i = 1; i <= qnt_cartas; i++) {
+        for (int i = 0; i < qnt_cartas; i++) {
             int carta_escolhida = (int)(Math.random() * cartas.size());
-            if (cartas.get(1) != rodada) {
+            if (cartas.get(carta_escolhida) != rodada) {
                 lying = true;
             }
             cartas.remove(carta_escolhida);
         }
-        System.out.println(lying);
+        System.out.println();
 
     }
     public void nomes(){
@@ -99,5 +101,8 @@ public class Jogador {
             System.out.println("Chances restantes: " + chances);
         }
 
+    }
+    public String getNome() {
+        return nome;
     }
 }
