@@ -6,7 +6,7 @@ public class Mesa {
     private char rodada;
     private boolean lying;
     private List<Jogador> jogador = new ArrayList<>();
-    private int jogador_mrt = 0;
+
 
     public Mesa(String nome) {
         this.nome = nome;
@@ -20,6 +20,7 @@ public class Mesa {
 
     public void Comecar(){
         do {
+            int jogador_mrt = 0;
             boolean contestacao_atv = false;
             int x = (int)(1 + Math.random() * 3);
             switch (x) {
@@ -70,7 +71,7 @@ public class Mesa {
                 jogador.get(z).Jogar(this);
 
             }
-        }while (jogador_mrt != 3);
+        }while (jogador.size() > 1);
         System.out.println(jogador.get(0).getNome() + "venceu!");
 
     }
