@@ -40,15 +40,15 @@ public class Mesa {
             }
             for (int z = 0; z < jogador.size(); z++){
                 if (z != 0){
-                    if (jogador.get(z).Contestacao() == 0){
+                    this.lying = jogador.get(z - 1).getLying();
+                    if (jogador.get(z).Contestacao(this) == 0){
                         break;
-                    } else if (jogador.get(z).Contestacao() == 1) {
+                    } else if (jogador.get(z).Contestacao(this) == 1) {
                         jogador.get(z - 1).AcataContestacao();
                         break;
                     }
                 }
                 jogador.get(z).Jogar(this);
-                jogador.get(z).getLying();
             }
         }while (jogador.get(0).getVivo() == true && jogador.get(jogador.size() - 1).getVivo() == true);
 
@@ -58,10 +58,8 @@ public class Mesa {
         return this.rodada;
     }
 
-    public void Mentindo() {
-        if (jogador.get(0).getVivo() == true) {
-
-        }
+    public boolean getMentindo() {
+        return lying;
     }
 
 }

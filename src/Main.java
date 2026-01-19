@@ -5,7 +5,7 @@ public class Main {
     public static final String ANSI_YELLOW = "\u001B[33m";//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 
     public static void main() {//TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        IO.println(String.format("Hello and welcome!"));
+        IO.println(String.format("Hello and welcome!♥"));
 
         Mesa mesa = new Mesa("Mesa");
         mesa.Comecar();

@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 
 public class Jogador {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+
     private String nome;
     private boolean vivo;
     private ArrayList<Character> cartas = new ArrayList<Character>();
@@ -38,7 +43,7 @@ public class Jogador {
         this.rodada = mesa.getRodada();
         lying = false;
         int qnt_cartas = (int)(1 + Math.random() * 3);
-        System.out.println(nome + " joga " +  qnt_cartas + " " + rodada);
+        System.out.print(nome + " joga " +  qnt_cartas + " " + rodada);
         for (int i = 1; i <= qnt_cartas; i++) {
             int carta_escolhida = (int)(Math.random() * cartas.size());
             if (cartas.get(1) != rodada) {
@@ -46,6 +51,7 @@ public class Jogador {
             }
             cartas.remove(carta_escolhida);
         }
+        System.out.println(lying);
 
     }
     public void nomes(){
@@ -60,11 +66,11 @@ public class Jogador {
         return lying;
     }
 
-    public int Contestacao() {
+    public int Contestacao(Mesa mesa) {
         int x = (int) (1 + Math.random() * 10);
         if (x <= 5) {
-            if (!lying) {
-                System.out.println("O " + nome + " contestou em falso!");
+            if (!mesa.getMentindo()) {
+                System.out.println(ANSI_RED + "O " + nome + " contestou em falso!" + ANSI_RESET);
                 int morte = (int)(1 + Math.random() * chances);
                 if (morte == chances) {
                     System.out.println("O " + nome + " morreu!");
@@ -75,7 +81,7 @@ public class Jogador {
                 }
                 return 0;
             }else{
-                System.out.println("O " + nome + " contestou!");
+                System.out.println(ANSI_GREEN + "O " + nome + " contestou!" + ANSI_RESET);
                 return 1;
             }
         }else{
@@ -86,9 +92,11 @@ public class Jogador {
     public void AcataContestacao() {
         int morte = (int)(1 + Math.random() * chances);
         if (morte == chances) {
+            System.out.println("O " + nome + " morreu!");
             vivo = false;
         }else {
             chances -= 1;
+            System.out.println("Chances restantes: " + chances);
         }
 
     }
