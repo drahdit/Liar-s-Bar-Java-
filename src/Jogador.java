@@ -7,7 +7,7 @@ public class Jogador {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
 
-    private String nome;
+    private final String nome;
     private boolean vivo;
     private ArrayList<Character> cartas = new ArrayList<Character>();
     private boolean lying = false;
@@ -94,13 +94,7 @@ public class Jogador {
             if (!mesa.getMentindo()) {
                 System.out.println(ANSI_RED + "O " + nome + " contestou em falso!" + ANSI_RESET);
                 int morte = (int)(1 + Math.random() * chances);
-                if (morte == chances) {
-                    System.out.println("O " + nome + " morreu!");
-                    vivo = false;
-                }else {
-                    chances -= 1;
-                    System.out.println("Chances restantes: " + chances);
-                }
+                testMorte();
                 return 0;
             }else{
                 System.out.println(ANSI_GREEN + "O " + nome + " contestou!" + ANSI_RESET);
@@ -112,6 +106,10 @@ public class Jogador {
     }
 
     public void AcataContestacao() {
+        testMorte();
+    }
+
+    private void testMorte(){
         int morte = (int)(1 + Math.random() * chances);
         if (morte == chances) {
             System.out.println("O " + nome + " morreu!");
@@ -120,7 +118,6 @@ public class Jogador {
             chances -= 1;
             System.out.println("Chances restantes: " + chances);
         }
-
     }
 
     public int getCartas() {
