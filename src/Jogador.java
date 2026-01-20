@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Jogador {
     public static final String ANSI_RESET = "\u001B[0m";
@@ -40,21 +41,41 @@ public class Jogador {
         }
     }
 
-    public void Jogar(Mesa mesa){
+    public void Jogar(Mesa mesa) {
         this.rodada = mesa.getRodada();
         lying = false;
-        int qnt_cartas = (int)(1 + (Math.random() * (cartas.size())));
-        System.out.print(nome + " joga " +  qnt_cartas + " " + rodada);
-        for (int i = 0; i < qnt_cartas; i++) {
-            int carta_escolhida = (int)(Math.random() * cartas.size());
-            if (cartas.get(carta_escolhida) != rodada) {
-                lying = true;
+        int qnt_cartas;
+        if (nome.equals("Jogador 1")) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Suas Cartas:");
+            for (int x = 0; x < cartas.size(); x++) {
+                System.out.print(cartas.get(x) + " ");
             }
-            cartas.remove(carta_escolhida);
+            System.out.println("\nQuantas cartas você quer jogar?");
+            qnt_cartas = sc.nextInt();
+            sc.nextLine();
+            System.out.println("Escolha suas cartas! (Uma de cada vez)");
+            for (int i = 0; i < qnt_cartas; i++) {
+                int carta_escolhida = sc.nextInt();
+                sc.nextLine();
+                if (cartas.get(carta_escolhida) != rodada) {
+                    lying = true;
+                }
+                cartas.remove(carta_escolhida);
+            }
+        } else {
+            qnt_cartas = (int) (1 + (Math.random() * (cartas.size())));
+            System.out.println(nome + " joga " + qnt_cartas + " " + rodada);
+            for (int i = 0; i < qnt_cartas; i++) {
+                int carta_escolhida = (int) (Math.random() * cartas.size());
+                if (cartas.get(carta_escolhida) != rodada) {
+                    lying = true;
+                }
+                cartas.remove(carta_escolhida);
+            }
         }
-        System.out.println();
-
     }
+
     public void nomes(){
         System.out.println("Nome do Jogador: " + nome);
     }

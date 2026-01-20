@@ -28,18 +28,21 @@ public class Mesa {
 
             boolean contestacao_atv = false;
             int x = (int)(1 + Math.random() * 3);
+            System.out.println("Comecando a rodada!");
             switch (x) {
                 case 1:
                     rodada = 'a';
+                    System.out.println("Ace's Table");
                     break;
                 case 2:
                     rodada = 'q';
+                    System.out.println("Queen's Table");
                     break;
                 case 3:
                     rodada = 'k';
+                    System.out.println("King's Table");
                     break;
             }
-            System.out.println("Comecando a rodada!");
 
             for (int i = 0; i < jogador.size(); i++){
                 if (jogador.get(i).getVivo() == false){
