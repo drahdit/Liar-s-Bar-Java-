@@ -9,6 +9,8 @@ public class Mesa {
     private int jogador_mrt = 0;
     private int loop = 0;
     int jogador_ini = loop % 4;
+    private int ultimo_jgd;
+    private boolean nov_loop = false;
 
 
     public Mesa(String nome) {
@@ -57,24 +59,35 @@ public class Mesa {
                 if (z > (3 - jogador_mrt)){
                     z = 0;
                 }
+                int hascartas = 0;
+                for (Jogador j : jogador){
+                    if (j.getCartas() == 0){
+                        hascartas++;
+                    }
+                }
+                if (hascartas == jogador.size()){
+                    for (Jogador j : jogador){
+                        j.AcataContestacao();
+                    }
+                    break;
+                }
+                if (jogador.get(z).getCartas() == 0){
+                    break;
+                }
                 if (jogador.size() == 1){
                     break;
                 }
-                if (z != jogador_ini){
-                    if (z == 0){
-                        this.lying = jogador.get(jogador.size() - 1).getLying();
-                    } else{
-                        this.lying = jogador.get(z - 1).getLying();
-                    }
+                if (z != jogador_ini && nov_loop) {
+                    this.lying = jogador.get(ultimo_jgd).getLying();
 
                     int resposta = jogador.get(z).Contestacao(this);
-                    if (resposta == 0){
+                    if (resposta == 0) {
                         contestacao_atv = true;
                         break;
                     } else if (resposta == 1) {
-                        if (z == 0){
+                        if (z == 0) {
                             jogador.get(jogador.size() - 1).AcataContestacao();
-                        }else {
+                        } else {
                             jogador.get(z - 1).AcataContestacao();
                         }
                         contestacao_atv = true;
@@ -82,15 +95,24 @@ public class Mesa {
                     }
                 }
                 jogador.get(z).Jogar(this);
-
+                ultimo_jgd = z;
+                nov_loop = true;
             }
             loop++;
             jogador_ini = loop % 4;
+            nov_loop = false;
             if (jogador_ini > jogador.size()){
                 jogador_ini -= jogador_mrt;
             }
         }while (jogador.size() > 1);
-        System.out.println(jogador.get(0).getNome() + "venceu!");
+        if (jogador.get(0).getVivo() == false) {
+            jogador.remove(0);
+        }
+        if (!jogador.isEmpty()){
+            System.out.println(jogador.get(0).getNome() + " venceu!");
+        } else {
+            System.out.println("Todos perderam!");
+        }
 
     }
 
