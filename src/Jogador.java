@@ -17,22 +17,42 @@ public class Jogador {
         this.nome = nome;
     }
 
-    public void Nova_rodada(){
+    public void Nova_rodada(Mesa mesa){
         cartas.clear();
         for (int x = 1; x < 6; x++) {
             int z = (int) (1 + Math.random() * 4);
             switch (z) {
                 case 1:
-                    cartas.add('a');
+                    if (mesa.getDeck('a') != 0){
+                        cartas.add('a');
+                        mesa.setDeck('a');
+                    }else {
+                        x--;
+                    }
                     break;
                 case 2:
-                    cartas.add('q');
+                    if (mesa.getDeck('q') != 0){
+                        cartas.add('q');
+                        mesa.setDeck('q');
+                    }else {
+                        x--;
+                    }
                     break;
                 case 3:
-                    cartas.add('k');
+                    if (mesa.getDeck('k') != 0){
+                        cartas.add('k');
+                        mesa.setDeck('k');
+                    }else {
+                        x--;
+                    }
                     break;
                 case 4:
-                    cartas.add('j');
+                    if (mesa.getDeck('j') != 0){
+                        cartas.add('j');
+                        mesa.setDeck('j');
+                    }else {
+                        x--;
+                    }
                     break;
             }
         }

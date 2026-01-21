@@ -16,7 +16,7 @@ public class Mesa {
     int jogador_ini = 0;
     private int ultimo_jgd;
     private boolean nov_loop = false;
-
+    private int[] deck = new int[4];
 
     public Mesa() {
         for (int z = 1; z < 5; z++){
@@ -27,14 +27,14 @@ public class Mesa {
 
     public void Comecar(){
         do {
-            int x = (int)(1 + Math.random() * 3);
+            deckReset();
 
             for (int i = 0; i < jogador.size(); i++){
                 if (!jogador.get(i).getVivo()){
                     jogador.remove(i);
                     jogador_mrt++;
                 }else {
-                    jogador.get(i).Nova_rodada();
+                    jogador.get(i).Nova_rodada(this);
                 }
             }
             if (jogador.size() == 1){
@@ -56,6 +56,7 @@ public class Mesa {
                 }
             }
 
+            int x = (int)(1 + Math.random() * 3);
             switch (x) {
                 case 1:
                     rodada = 'a';
@@ -142,6 +143,39 @@ public class Mesa {
             System.out.println(ANSI_GREEN + jogador.getFirst().getNome() + " venceu!" + ANSI_RESET);
         } else {
             System.out.println(ANSI_RED + "Todos perderam!" + ANSI_RESET);
+        }
+    }
+
+    private void deckReset(){
+        this.deck[0] = 6;
+        this.deck[1] = 6;
+        this.deck[2] = 6;
+        this.deck[3] = 2;
+    }
+
+    protected int getDeck(char carta){
+        if (carta == 'a'){
+            return this.deck[0];
+        }else if (carta == 'q'){
+            return this.deck[1];
+        }else if (carta == 'k'){
+            return this.deck[2];
+        }else if (carta == 'j'){
+            return this.deck[3];
+        }else {
+            return -1;
+        }
+    }
+
+    protected void setDeck(char carta){
+        if (carta == 'a'){
+            this.deck[0] -= 1;
+        }else if (carta == 'q'){
+            this.deck[1] -= 1;
+        }else if (carta == 'k'){
+            this.deck[2] -= 1;
+        }else if (carta == 'j'){
+            this.deck[3] -= 1;
         }
     }
 
