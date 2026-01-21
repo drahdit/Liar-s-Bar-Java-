@@ -1,51 +1,36 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Mesa {
-    private String nome;
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+
     private char rodada;
     private boolean lying;
-    private List<Jogador> jogador = new ArrayList<>();
+    private final List<Jogador> jogador = new ArrayList<>();
     private int jogador_mrt = 0;
     private int loop = 0;
-    int jogador_ini = loop % 4;
+    int jogador_ini = 0;
     private int ultimo_jgd;
     private boolean nov_loop = false;
 
 
-    public Mesa(String nome) {
-        this.nome = nome;
-
+    public Mesa() {
         for (int z = 1; z < 5; z++){
             String nomejogador = "Jogador " + z;
             jogador.add(new Jogador(nomejogador));
         }
-
     }
 
     public void Comecar(){
         do {
-
-            boolean contestacao_atv = false;
             int x = (int)(1 + Math.random() * 3);
-            System.out.println("Comecando a rodada!");
-            switch (x) {
-                case 1:
-                    rodada = 'a';
-                    System.out.println("Ace's Table");
-                    break;
-                case 2:
-                    rodada = 'q';
-                    System.out.println("Queen's Table");
-                    break;
-                case 3:
-                    rodada = 'k';
-                    System.out.println("King's Table");
-                    break;
-            }
 
             for (int i = 0; i < jogador.size(); i++){
-                if (jogador.get(i).getVivo() == false){
+                if (!jogador.get(i).getVivo()){
                     jogador.remove(i);
                     jogador_mrt++;
                 }else {
@@ -56,9 +41,37 @@ public class Mesa {
                 break;
             }
 
-            contestacao_atv = false;
+            System.out.println(ANSI_YELLOW + "\nComeçando a rodada!" + ANSI_RESET);
+            for (Jogador j : jogador) {
+                if (j.getNome().equals("Jogador 1")) {
+                    System.out.print(j.getNome() + " Chances: ");
+                }else {
+                    System.out.print("\n" + j.getNome() + " Chances: ");
+                }
+                for (int a = 0; a < j.chances; a++){
+                    System.out.print("♥");
+                }
+                for (int b = 0; b < 6 - j.chances; b++){
+                    System.out.print("-");
+                }
+            }
 
-            for (int z = jogador_ini; z < 1000 || contestacao_atv == false; z++){
+            switch (x) {
+                case 1:
+                    rodada = 'a';
+                    System.out.println("\n[Ace's Table]");
+                    break;
+                case 2:
+                    rodada = 'q';
+                    System.out.println("\n[Queen's Table]");
+                    break;
+                case 3:
+                    rodada = 'k';
+                    System.out.println("\n[King's Table]");
+                    break;
+            }
+
+            for (int z = jogador_ini; z < 1000; z++){
                 if (z > (3 - jogador_mrt)){
                     z = 0;
                 }
@@ -82,41 +95,54 @@ public class Mesa {
                 }
                 if (z != jogador_ini && nov_loop) {
                     this.lying = jogador.get(ultimo_jgd).getLying();
-
-                    int resposta = jogador.get(z).Contestacao(this);
-                    if (resposta == 0) {
-                        contestacao_atv = true;
-                        break;
-                    } else if (resposta == 1) {
-                        if (z == 0) {
-                            jogador.get(jogador.size() - 1).AcataContestacao();
-                        } else {
-                            jogador.get(z - 1).AcataContestacao();
+                    int m = (int) (1 + Math.random() * 10);
+                    if (jogador.get(z).getNome().equals("Jogador 1")){
+                        Scanner sc = new Scanner(System.in);
+                        System.out.println("Deseja contestar seu adversário? (s/n)");
+                        char decisao =  sc.next().charAt(0);
+                        if (decisao == 's'){
+                            int n = jogador.get(z).Contestacao(this);
+                            if (n == 1){
+                                jogador.get(ultimo_jgd).AcataContestacao();
+                            }
+                            break;
                         }
-                        contestacao_atv = true;
-                        break;
+                    }else if (m <= 5) {
+                        int resposta = jogador.get(z).Contestacao(this);
+                        if (resposta == 0) {
+                            break;
+                        } else if (resposta == 1) {
+                            if (z == 0) {
+                                jogador.getLast().AcataContestacao();
+                            } else {
+                                jogador.get(z - 1).AcataContestacao();
+                            }
+                            break;
+                        }
                     }
                 }
                 jogador.get(z).Jogar(this);
                 ultimo_jgd = z;
                 nov_loop = true;
             }
+
             loop++;
             jogador_ini = loop % 4;
             nov_loop = false;
             if (jogador_ini > jogador.size()){
                 jogador_ini -= jogador_mrt;
             }
+
         }while (jogador.size() > 1);
-        if (jogador.get(0).getVivo() == false) {
-            jogador.remove(0);
+
+        if (!jogador.getFirst().getVivo()) {
+            jogador.removeFirst();
         }
         if (!jogador.isEmpty()){
-            System.out.println(jogador.get(0).getNome() + " venceu!");
+            System.out.println(ANSI_GREEN + jogador.getFirst().getNome() + " venceu!" + ANSI_RESET);
         } else {
-            System.out.println("Todos perderam!");
+            System.out.println(ANSI_RED + "Todos perderam!" + ANSI_RESET);
         }
-
     }
 
     public char getRodada() {
@@ -126,5 +152,4 @@ public class Mesa {
     public boolean getMentindo() {
         return lying;
     }
-
 }

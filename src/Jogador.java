@@ -5,15 +5,12 @@ public class Jogador {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
 
     private final String nome;
     private boolean vivo;
-    private ArrayList<Character> cartas = new ArrayList<Character>();
+    private final ArrayList<Character> cartas = new ArrayList<>();
     private boolean lying = false;
-    private char rodada;
     int chances = 6;
-    private boolean contestacao;
 
     public Jogador(String nome) {
         vivo = true;
@@ -23,7 +20,7 @@ public class Jogador {
     public void Nova_rodada(){
         cartas.clear();
         for (int x = 1; x < 6; x++) {
-            int z = (int) (1 + Math.random() * 3);
+            int z = (int) (1 + Math.random() * 4);
             switch (z) {
                 case 1:
                     cartas.add('a');
@@ -42,26 +39,37 @@ public class Jogador {
     }
 
     public void Jogar(Mesa mesa) {
-        this.rodada = mesa.getRodada();
+        char rodada = mesa.getRodada();
         lying = false;
         int qnt_cartas;
         if (nome.equals("Jogador 1")) {
             Scanner sc = new Scanner(System.in);
             System.out.println("Suas Cartas:");
-            for (int x = 0; x < cartas.size(); x++) {
-                System.out.print(cartas.get(x) + " ");
+            for (Character carta : cartas) {
+                System.out.print(carta + " ");
             }
             System.out.println("\nQuantas cartas você quer jogar?");
             qnt_cartas = sc.nextInt();
             sc.nextLine();
-            System.out.println("Escolha suas cartas! (Uma de cada vez)");
+
             for (int i = 0; i < qnt_cartas; i++) {
+                if (i == 0){
+                    System.out.println("Escolha suas cartas! (Escolha de 1 a " + cartas.size() + ")");
+                }else {
+                    System.out.println("\nEscolha suas cartas! (Escolha de 1 a " + cartas.size() + ")");
+                }
                 int carta_escolhida = sc.nextInt();
                 sc.nextLine();
-                if (cartas.get(carta_escolhida) != rodada) {
+                if (cartas.get(carta_escolhida - 1) != rodada && cartas.get(carta_escolhida - 1) != 'j') {
                     lying = true;
                 }
-                cartas.remove(carta_escolhida);
+                cartas.remove(carta_escolhida - 1);
+                if(i != qnt_cartas - 1){
+                    for (Character carta : cartas) {
+                        System.out.print(carta + " ");
+                    }
+                }
+
             }
         } else {
             qnt_cartas = (int) (1 + (Math.random() * (cartas.size())));
@@ -76,10 +84,6 @@ public class Jogador {
         }
     }
 
-    public void nomes(){
-        System.out.println("Nome do Jogador: " + nome);
-    }
-
     public boolean getVivo() {
         return vivo;
     }
@@ -89,20 +93,15 @@ public class Jogador {
     }
 
     public int Contestacao(Mesa mesa) {
-        int x = (int) (1 + Math.random() * 10);
-        if (x <= 5) {
+
             if (!mesa.getMentindo()) {
                 System.out.println(ANSI_RED + "O " + nome + " contestou em falso!" + ANSI_RESET);
-                int morte = (int)(1 + Math.random() * chances);
                 testMorte();
                 return 0;
             }else{
                 System.out.println(ANSI_GREEN + "O " + nome + " contestou!" + ANSI_RESET);
                 return 1;
             }
-        }else{
-            return 2;
-        }
     }
 
     public void AcataContestacao() {
@@ -116,7 +115,6 @@ public class Jogador {
             vivo = false;
         }else {
             chances -= 1;
-            System.out.println("Chances restantes: " + chances);
         }
     }
 
