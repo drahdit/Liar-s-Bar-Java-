@@ -16,7 +16,7 @@ public class Mesa {
     int jogador_ini = 0;
     private int ultimo_jgd;
     private boolean nov_loop = false;
-    private int[] deck = new int[4];
+    private final int[] deck = new int[4];
 
     public Mesa() {
         for (int z = 1; z < 5; z++){
