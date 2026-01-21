@@ -84,14 +84,6 @@ public class Jogador {
         }
     }
 
-    public boolean getVivo() {
-        return vivo;
-    }
-
-    public boolean getLying() {
-        return lying;
-    }
-
     public int Contestacao(Mesa mesa) {
 
             if (!mesa.getMentindo()) {
@@ -104,10 +96,6 @@ public class Jogador {
             }
     }
 
-    public void AcataContestacao() {
-        testMorte();
-    }
-
     private void testMorte(){
         int morte = (int)(1 + Math.random() * chances);
         if (morte == chances) {
@@ -116,6 +104,18 @@ public class Jogador {
         }else {
             chances -= 1;
         }
+    }
+
+    public void AcataContestacao() {
+        testMorte();
+    }
+
+    public boolean getVivo() {
+        return vivo;
+    }
+
+    public boolean getLying() {
+        return lying;
     }
 
     public int getCartas() {
