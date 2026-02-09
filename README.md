@@ -96,4 +96,7 @@ O Jogador 1 sobreviveu... (Chances restantes: 5)
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests para melhorar a inteligência dos bots, adicionar novas mecânicas ou refatorar o código.
 
 ## 📝 Licença
-Este projeto está sobre a licença MIT.
+Este projeto está sob a licença **MIT**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+Feito com ☕ e Java.
